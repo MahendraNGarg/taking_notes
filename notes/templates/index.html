@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+	<div class="wrap">
+	    <div class="fleft">
+			{% for note in notes %}
+				<div class="notes-listing">
+					<input type="hidden" value="{{note.id}}" name="note_id">
+					<h4 class="title">{{note.title|title}}</h4>
+					<p>{{note.created|time}}&nbsp;&nbsp;{{note.description}}</p>
+				</div>
+			{% endfor %}
+
+	    </div>
+	    <div class="fright">
+    		<center>{{time}}</center>
+    		<h3> Testing notes feature</h3>
+	    	<div class="container hide_div">
+	    		<form method="POST">
+	    		{% csrf_token %}
+		    	{% for field in form %}
+		    		{{ field.label }}
+		    		{{ field}}</br>
+		    	{% endfor %}
+		    	<button type="submit">Create Note</button>
+		    	</form>
+	    	</div>
+	    	<button id="write-note" type="submit">Write Note here</button>
+	    </div>
+	</div>
+{% endblock%}
+
+{% block script %}
+	{{ block.super }}
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('.notes-listing').click(function(){
+				$('.notes-listing').each(function(){
+					if($(this).hasClass("selected")){
+						$(this).removeClass("selected")
+					}	
+				});
+				$(this).addClass("selected")
+			});
+
+			$('.delete-note').click(function(){
+				var selected_value = $('.selected').find('input').val();
+				if(selected_value !== undefined){
+					$.ajax({
+				        url: "{% url 'note-delete' %}",
+				        data: {
+				          'note_id': selected_value
+				        },
+				        dataType: 'json',
+				        success: function (data) {
+				          if (data['success_message']) {
+								location.reload();
+				          } else{
+				          	alert(data['error_message'])
+				          }
+				        }
+	      			});
+				} else {
+					alert("Please select a note to delete!")
+				}
+			});
+
+			$('.create-note').click(function(){
+				$(".container").removeClass('hide_div');
+			});
+
+			$("#write-note").click(function(){
+				$(".container").removeClass('hide_div');
+			})
+		});
+	</script>
+{% endblock %}

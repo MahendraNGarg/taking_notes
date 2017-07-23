@@ -1,0 +1,32 @@
+{% load static %}
+
+<html lang="en">
+	{% block extracss %}
+		<head>
+
+			<link href='{% static "css/main.css" %}' rel="stylesheet">
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		</head>
+
+		<title> Notes Application</title>
+	{% endblock extracss %}
+
+	<body>
+		{% block header %}
+			<div class="topnav">
+			  	<a href="javascript:void(0)" class="create-note"><i class="fa fa-file"></i></a>
+		  		<a href="javascript:void(0)" class="delete-note"><i class="fa fa-trash"></i></a>
+			</div>
+
+		{% endblock header %}
+
+		{% block content %}
+
+		{% endblock content %}
+
+		{% block script %}
+			<!-- jQuery -->
+			<script type="text/javascript" src='{% static "js/jquery-3.2.1.min.js" %}'></script>
+		{% endblock %}
+	</body>
+</html>
